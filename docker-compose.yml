@@ -1,0 +1,21 @@
+version: '2'
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+  fpm:
+    build: .
+    volumes:
+      - "./:/code"
+  web:
+    image: nginx
+    volumes:
+      - "./:/code"
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "8080:80"
+    depends_on:
+      - fpm
+
